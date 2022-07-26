@@ -1,0 +1,44 @@
+battery.charge: 100
+battery.charge.low: 10
+battery.charge.warning: 50
+battery.date: 2001/09/25
+battery.mfr.date: 2019/01/09
+battery.runtime: 2500
+battery.runtime.low: 120
+battery.type: PbAc
+battery.voltage: 13.5
+battery.voltage.nominal: 12.0
+device.mfr: American Power Conversion
+device.model: Back-UPS XS 700U   
+device.serial: 3B1902X64034   
+device.type: ups
+driver.name: usbhid-ups
+driver.parameter.pollfreq: 30
+driver.parameter.pollinterval: 2
+driver.parameter.port: auto
+driver.parameter.synchronous: no
+driver.version: 2.7.4
+driver.version.data: APC HID 0.96
+driver.version.internal: 0.41
+input.sensitivity: medium
+input.transfer.high: 300
+input.transfer.low: 140
+input.voltage: 232.0
+input.voltage.nominal: 230
+ups.alarm: Replace battery! 
+ups.beeper.status: disabled
+ups.delay.shutdown: 20
+ups.firmware: 924.Z3 .I
+ups.firmware.aux: Z3  
+ups.load: 13
+ups.mfr: American Power Conversion
+ups.mfr.date: 2019/01/09
+ups.model: Back-UPS XS 700U   
+ups.productid: 0002
+ups.realpower.nominal: 390
+ups.serial: 3B1902X64034   
+ups.status: ALARM OL RB
+ups.test.result: No test initiated
+ups.timer.reboot: 0
+ups.timer.shutdown: -1
+ups.vendorid: 051d

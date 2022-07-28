@@ -58,9 +58,9 @@ module Riemann
         opts[:ups].each do |ups|
           service = "#{ups} battery charge"
           battery_charge = Integer(upsc[ups]['battery.charge'])
-          battery_state = if battery_charge < Integer(upsc[ups]['battery.charge.low'])
+          battery_state = if battery_charge < upsc[ups]['battery.charge.low'].to_i
                             'critical'
-                          elsif battery_charge < Integer(upsc[ups]['battery.charge.warning'])
+                          elsif battery_charge < upsc[ups]['battery.charge.warning'].to_i
                             'warning'
                           else
                             'ok'

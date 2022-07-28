@@ -120,6 +120,8 @@ module Riemann
 
       def report_ups_alarm
         opts[:ups].each do |ups|
+          next unless upsc[ups]['ups.alarm']
+
           report(
             service: "#{ups} ups alarm",
             state: 'critical',

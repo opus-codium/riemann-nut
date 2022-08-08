@@ -11,4 +11,5 @@ GitHubChangelogGenerator::RakeTask.new :changelog do |config|
   config.project = 'riemann-nut'
   config.exclude_labels = ['skip-changelog']
   config.future_release = Riemann::Tools::Nut::VERSION
+  config.since_tag = 'v1.0.0'
 end

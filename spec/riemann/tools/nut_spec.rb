@@ -4,7 +4,7 @@ require 'riemann/tools/nut'
 
 RSpec.describe Riemann::Tools::Nut do
   before do
-    expect(Open3).to receive(:capture2).with('upsc', 'ups@localhost').and_return([File.read('spec/fixtures/upsc.no-battery.output'), double])
+    allow(Open3).to receive(:capture2).with('upsc', 'ups@localhost').and_return([File.read('spec/fixtures/upsc.no-battery.output'), double])
     subject.invalidate_cache
   end
 

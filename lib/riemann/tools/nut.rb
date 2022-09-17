@@ -82,6 +82,8 @@ module Riemann
 
       def report_battery_voltage
         opts[:ups].each do |ups|
+          next unless upsc[ups]['battery.voltage']
+
           service = "#{ups} battery voltage"
           battery_voltage = Float(upsc[ups]['battery.voltage'])
 
@@ -91,16 +93,19 @@ module Riemann
             state: 'ok',
             description: "#{battery_voltage} V",
           )
-        rescue TypeError
+        rescue TypeError => e
           report(
             service: service,
             state: 'critical',
+            description: e.message,
           )
         end
       end
 
       def report_input_voltage
         opts[:ups].each do |ups|
+          next unless upsc[ups]['input.voltage']
+
           service = "#{ups} input voltage"
           input_voltage = Float(upsc[ups]['input.voltage'])
 
@@ -110,10 +115,11 @@ module Riemann
             state: 'ok',
             description: "#{input_voltage} V",
           )
-        rescue TypeError
+        rescue TypeError => e
           report(
             service: service,
             state: 'critical',
+            description: e.message,
           )
         end
       end
@@ -148,10 +154,11 @@ module Riemann
             state: ups_state,
             description: "#{ups_load} W",
           )
-        rescue TypeError
+        rescue TypeError => e
           report(
             service: service,
             state: 'critical',
+            description: e.message,
           )
         end
       end

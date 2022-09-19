@@ -1,8 +1,16 @@
 # Changelog
 
-## [1.0.1](https://github.com/opus-codium/riemann-nut/tree/1.0.1) (2022-08-08)
+## [1.0.2](https://github.com/opus-codium/riemann-nut/tree/1.0.2) (2022-09-19)
 
-[Full Changelog](https://github.com/opus-codium/riemann-nut/compare/v1.0.0...1.0.1)
+[Full Changelog](https://github.com/opus-codium/riemann-nut/compare/v1.0.1...1.0.2)
+
+**Fixed bugs:**
+
+- Do not report missing metrics as critical [\#3](https://github.com/opus-codium/riemann-nut/pull/3) ([smortex](https://github.com/smortex))
+
+## [v1.0.1](https://github.com/opus-codium/riemann-nut/tree/v1.0.1) (2022-08-08)
+
+[Full Changelog](https://github.com/opus-codium/riemann-nut/compare/v1.0.0...v1.0.1)
 
 **Fixed bugs:**
 

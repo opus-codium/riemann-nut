@@ -8,6 +8,8 @@ RSpec.describe Riemann::Tools::Nut do
     subject.invalidate_cache
   end
 
+  let(:ups) { 'ups@localhost' }
+
   describe '#report_battery_charge' do
     it 'reports battery charge' do
       allow(subject).to receive(:report).with(
@@ -16,7 +18,7 @@ RSpec.describe Riemann::Tools::Nut do
         description: '100 %',
         state: 'ok',
       )
-      subject.report_battery_charge
+      subject.report_battery_charge(ups)
       expect(subject).to have_received(:report)
     end
   end
@@ -29,7 +31,7 @@ RSpec.describe Riemann::Tools::Nut do
         description: '13.4 V',
         state: 'ok',
       )
-      subject.report_battery_voltage
+      subject.report_battery_voltage(ups)
       expect(subject).to have_received(:report)
     end
   end
@@ -42,7 +44,7 @@ RSpec.describe Riemann::Tools::Nut do
         description: '230.0 V',
         state: 'ok',
       )
-      subject.report_input_voltage
+      subject.report_input_voltage(ups)
       expect(subject).to have_received(:report)
     end
   end
@@ -54,7 +56,7 @@ RSpec.describe Riemann::Tools::Nut do
         description: 'Replace battery! No battery installed!',
         state: 'critical',
       )
-      subject.report_ups_alarm
+      subject.report_ups_alarm(ups)
       expect(subject).to have_received(:report)
     end
   end
@@ -67,7 +69,7 @@ RSpec.describe Riemann::Tools::Nut do
         description: '12.0 W',
         state: 'ok',
       )
-      subject.report_ups_load
+      subject.report_ups_load(ups)
       expect(subject).to have_received(:report)
     end
   end
@@ -79,7 +81,7 @@ RSpec.describe Riemann::Tools::Nut do
         description: 'ALARM OL RB',
         state: 'critical',
       )
-      subject.report_ups_status
+      subject.report_ups_status(ups)
       expect(subject).to have_received(:report)
     end
   end

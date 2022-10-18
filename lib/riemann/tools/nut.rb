@@ -36,19 +36,7 @@ module Riemann
         @cached_data[:upsc] = {}
 
         opts[:ups].each do |ups|
-          output, _status = Open3.capture2('upsc', ups)
-
-          data = {}
-          output.lines.each do |line|
-            next unless line.chomp =~ /\A([^:]+): (.*)\z/
-
-            key = Regexp.last_match[1]
-            value = Regexp.last_match[2].strip
-
-            data[key] = value
-          end
-
-          @cached_data[:upsc][ups] = data
+          @cached_data[:upsc][ups] = upsc_ups(ups)
         rescue Errno::ENOENT
           @cached_data[:upsc][ups] = {}
         end
@@ -56,22 +44,40 @@ module Riemann
         @cached_data[:upsc]
       end
 
+      def upsc_ups(ups)
+        output, _status = Open3.capture2('upsc', ups)
+
+        data = {}
+        output.lines.each do |line|
+          next unless line.chomp =~ /\A([^:]+): (.*)\z/
+
+          key = Regexp.last_match[1]
+          value = normalize(Regexp.last_match[2].strip)
+
+          data[key] = value
+        end
+
+        data
+      end
+
+      def normalize(value)
+        Integer(value)
+      rescue ArgumentError
+        begin
+          Float(value)
+        rescue ArgumentError
+          value
+        end
+      end
+
       def report_battery_charge(ups)
         service = "#{ups} battery charge"
-        battery_charge = Integer(upsc[ups]['battery.charge'])
-        battery_state = if battery_charge < upsc[ups]['battery.charge.low'].to_i
-                          'critical'
-                        elsif battery_charge < upsc[ups]['battery.charge.warning'].to_i
-                          'warning'
-                        else
-                          'ok'
-                        end
 
         report(
           service: service,
-          metric: battery_charge,
-          state: battery_state,
-          description: "#{battery_charge} %",
+          metric: upsc[ups]['battery.charge'],
+          state: battery_charge_state(ups),
+          description: "#{upsc[ups]['battery.charge']} %",
         )
       rescue TypeError
         report(
@@ -80,17 +86,26 @@ module Riemann
         )
       end
 
+      def battery_charge_state(ups)
+        if upsc[ups]['battery.charge'] < upsc[ups]['battery.charge.low']
+          'critical'
+        elsif upsc[ups]['battery.charge'] < upsc[ups]['battery.charge.warning']
+          'warning'
+        else
+          'ok'
+        end
+      end
+
       def report_battery_voltage(ups)
         return unless upsc[ups]['battery.voltage']
 
         service = "#{ups} battery voltage"
-        battery_voltage = Float(upsc[ups]['battery.voltage'])
 
         report(
           service: service,
-          metric: battery_voltage,
+          metric: upsc[ups]['battery.voltage'],
           state: 'ok',
-          description: "#{battery_voltage} V",
+          description: "#{upsc[ups]['battery.voltage']} V",
         )
       rescue TypeError => e
         report(
@@ -104,13 +119,12 @@ module Riemann
         return unless upsc[ups]['input.voltage']
 
         service = "#{ups} input voltage"
-        input_voltage = Float(upsc[ups]['input.voltage'])
 
         report(
           service: service,
-          metric: input_voltage,
+          metric: upsc[ups]['input.voltage'],
           state: 'ok',
-          description: "#{input_voltage} V",
+          description: "#{upsc[ups]['input.voltage']} V",
         )
       rescue TypeError => e
         report(

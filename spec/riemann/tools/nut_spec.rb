@@ -62,15 +62,59 @@ RSpec.describe Riemann::Tools::Nut do
   end
 
   describe '#report_ups_load' do
-    it 'reports ups load' do
+    before do
+      ARGV.replace(['--load-warning', load_warning, '--load-critical', load_critical])
+
       allow(subject).to receive(:report).with(
         service: 'ups@localhost ups load',
         metric: 12.0,
         description: '12.0 W',
-        state: 'ok',
+        state: expected_state,
       )
-      subject.report_ups_load(ups)
-      expect(subject).to have_received(:report)
+    end
+
+    context 'without limits' do
+      let(:load_warning) { 0 }
+      let(:load_critical) { 0 }
+      let(:expected_state) { 'ok' }
+
+      it 'reports ups load' do
+        subject.report_ups_load(ups)
+        expect(subject).to have_received(:report)
+      end
+    end
+
+    context 'when bellow limits' do
+      let(:load_warning) { 15 }
+      let(:load_critical) { 20 }
+      let(:expected_state) { 'ok' }
+
+      it 'reports ups load' do
+        subject.report_ups_load(ups)
+        expect(subject).to have_received(:report)
+      end
+    end
+
+    context 'when above warning watermark' do
+      let(:load_warning) { 10 }
+      let(:load_critical) { 25 }
+      let(:expected_state) { 'warning' }
+
+      it 'reports ups load' do
+        subject.report_ups_load(ups)
+        expect(subject).to have_received(:report)
+      end
+    end
+
+    context 'when above critical watermark' do
+      let(:load_warning) { 5 }
+      let(:load_critical) { 10 }
+      let(:expected_state) { 'critical' }
+
+      it 'reports ups load' do
+        subject.report_ups_load(ups)
+        expect(subject).to have_received(:report)
+      end
     end
   end
 

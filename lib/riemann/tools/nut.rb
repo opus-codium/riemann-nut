@@ -133,18 +133,11 @@ module Riemann
       def report_ups_load(ups)
         service = "#{ups} ups load"
         ups_load = Float(upsc[ups]['ups.load'])
-        ups_state = if opts[:load_critical].positive? && ups_load > opts[:load_critical]
-                      'critical'
-                    elsif opts[:load_warning].positive? && ups_load > opts[:load_warning]
-                      'warning'
-                    else
-                      'ok'
-                    end
 
         report(
           service: service,
           metric: ups_load,
-          state: ups_state,
+          state: ups_load_state(ups_load),
           description: "#{ups_load} W",
         )
       rescue TypeError => e
@@ -153,6 +146,16 @@ module Riemann
           state: 'critical',
           description: e.message,
         )
+      end
+
+      def ups_load_state(ups_load)
+        if opts[:load_critical].positive? && ups_load > opts[:load_critical]
+          'critical'
+        elsif opts[:load_warning].positive? && ups_load > opts[:load_warning]
+          'warning'
+        else
+          'ok'
+        end
       end
 
       def report_ups_status(ups)

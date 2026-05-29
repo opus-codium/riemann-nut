@@ -3,7 +3,6 @@
 require "simplecov"
 
 if ARGV.any?
-  puts "===> Cleaning ARGV"
   ARGV.replace([])
 end
 

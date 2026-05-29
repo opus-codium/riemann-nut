@@ -1,20 +1,23 @@
+# Managed by modulesync - DO NOT EDIT
+# See: https://github.com/opus-codium/modulesync_riemann
+
 # frozen_string_literal: true
 
-require 'riemann/tools/nut/version'
+require "riemann/tools/nut/version"
 
-require 'bundler/gem_tasks'
-require 'rspec/core/rake_task'
+require "bundler/gem_tasks"
+require "rspec/core/rake_task"
 
 RSpec::Core::RakeTask.new(:spec)
 
 task default: :spec
 
-require 'github_changelog_generator/task'
+require "github_changelog_generator/task"
 
 GitHubChangelogGenerator::RakeTask.new :changelog do |config|
-  config.user = 'opus-codium'
-  config.project = 'riemann-nut'
-  config.exclude_labels = ['skip-changelog']
+  config.user = "opus-codium"
+  config.project = "riemann-nut"
+  config.exclude_labels = ["dependencies", "skip-changelog"]
   config.future_release = Riemann::Tools::Nut::VERSION
-  config.since_tag = 'v1.0.0'
+  config.since_tag = "v1.0.0"
 end

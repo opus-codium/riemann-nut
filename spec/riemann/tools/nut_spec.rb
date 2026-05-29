@@ -76,7 +76,8 @@ RSpec.describe Riemann::Tools::Nut do
 
   describe "#report_ups_load" do
     before do
-      ARGV.replace(["--load-warning", load_warning, "--load-critical", load_critical])
+      ARGV.replace(["--load-warning", load_warning.to_s, "--load-critical", load_critical.to_s])
+      instance.instance_variable_set(:@options, nil)
 
       allow(instance).to receive(:report).with(
         service: "ups@localhost ups load",

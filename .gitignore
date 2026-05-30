@@ -1,2 +1,8 @@
-Gemfile.lock
-spec/examples.txt
+# Managed by modulesync - DO NOT EDIT
+# See: https://github.com/opus-codium/modulesync_riemann
+
+/.rspec_status
+/Gemfile.lock
+/coverage/
+/pkg/
+/spec/examples.txt

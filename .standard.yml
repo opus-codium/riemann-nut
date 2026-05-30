@@ -1,4 +1,5 @@
 # Managed by modulesync - DO NOT EDIT
 # See: https://github.com/opus-codium/modulesync_riemann
 
-* @opus-codium/core
+plugins:
+  - standard-rspec
